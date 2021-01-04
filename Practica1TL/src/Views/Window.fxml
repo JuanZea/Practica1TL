@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WindowController">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Lectura de archivo">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane layoutY="1.0" prefHeight="360.0" prefWidth="600.0">
+                           <children>
+                              <Button layoutX="348.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#searchFile" prefHeight="31.0" prefWidth="153.0" text="Examinar" />
+                              <Label layoutX="72.0" layoutY="32.0" text="Seleccione un archivo:">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="ta_file" layoutX="23.0" layoutY="75.0" prefHeight="211.0" prefWidth="555.0" promptText="Puedes seleccionar un archivo java con &quot;Examinar&quot; y editarlo en el area de texto. O escribirlo directamente.">
+                                 <font>
+                                    <Font name="Segoe UI" size="20.0" />
+                                 </font>
+                              </TextArea>
+                              <Button layoutX="23.0" layoutY="301.0" mnemonicParsing="false" onMouseClicked="#analyze" prefHeight="31.0" prefWidth="367.0" text="Analizar" />
+                              <ImageView fx:id="img_analyze" fitHeight="54.0" fitWidth="54.0" layoutX="474.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Resultados">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane prefHeight="362.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                              <Tab text="Resumen del análisis">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="14.0" text="Resultado de análisis:">
+                                             <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lab_result" layoutX="14.0" layoutY="38.0" text="No se ha leído ningún archivo">
+                                             <font>
+                                                <Font name="Segoe UI Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fx:id="img_analyze1" fitHeight="54.0" fitWidth="54.0" layoutX="532.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+                                          <TextArea fx:id="ta_errors" editable="false" layoutX="10.0" layoutY="70.0" prefHeight="246.0" prefWidth="580.0" promptText=":D">
+                                             <font>
+                                                <Font name="Segoe UI" size="17.0" />
+                                             </font>
+                                          </TextArea>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </Tab>
+                            <Tab text="LSL">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TextArea fx:id="ta_lsl" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="304.0" prefWidth="580.0" promptText=":D">
+                                             <font>
+                                                <Font name="Segoe UI" size="17.0" />
+                                             </font>
+                                          </TextArea>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Acerca de">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="128.0" layoutY="14.0" text="Acerca del Mini-Compilador:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="74.0" layoutY="57.0" text="Autores:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="167.0" layoutY="57.0" text="Juan David Zea &amp;&amp; Vanessa Tocasuche" textFill="#f0ad4e">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="197.0" layoutY="91.0" text="Documentación:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="31.0" layoutY="182.0" text="Manual de uso:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="231.0" text="Manual técnico:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="283.0" text="Informe de análisis:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="105.0" layoutY="128.0" text="GitHub:">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Hyperlink layoutX="186.0" layoutY="126.0" onMouseClicked="#link0" text="https://github.com/JuanZea/Practica1TL" />
+                        <Hyperlink layoutX="227.0" layoutY="180.0" onMouseClicked="#link1" text="COPIAR LINK" />
+                        <Hyperlink layoutX="227.0" layoutY="229.0" onMouseClicked="#link2" text="COPIAR LINK" />
+                        <Hyperlink layoutX="227.0" layoutY="281.0" onMouseClicked="#link3" text="COPIAR LINK" />
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="395.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icon.png" />
+                           </image>
+                        </ImageView>
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
