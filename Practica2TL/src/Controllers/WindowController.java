@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class WindowController {
 
+    public ArrayList<String> response;
+
     @FXML
     Label lab_1;
 
@@ -63,16 +65,12 @@ public class WindowController {
     public void analyze() {
         if (!ta_file.getText().isEmpty()) {
             Compiler compiler = new Compiler();
-//            ArrayList<ArrayList<String>> compiled = compiler.analyze(ta_file.getText());
-//            ArrayList<String> responses = compiled.get(0);
-//            ArrayList<String> stringLists = compiled.get(1);
-//            int errors = Compiler.hasError(responses);
-//            if (errors == 0) {
-//                this.updateImages(1);
-//            } else {
-//                this.updateImages(0);
-//            }
-//            this.results(responses, stringLists, errors);
+            compiler.setFile(ta_file.getText());
+            this.response = compiler.analyze();
+            for (String line :
+                    this.response) {
+                System.out.println(line);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "El archivo esta vacío", "Error", JOptionPane.ERROR_MESSAGE);
             this.updateImages(0);
