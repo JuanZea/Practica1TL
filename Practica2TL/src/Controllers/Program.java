@@ -10,12 +10,12 @@ import javafx.stage.Stage;
 public class Program extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/window.fxml"));
-        primaryStage.getIcons().add(new Image("Views/images/icon.png"));
-        primaryStage.setTitle("Mini-Compilador V2");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/Root.fxml"));
+        stage.getIcons().add(new Image("/Resources/Images/icon.png"));
+        stage.setTitle("Mini-Compilador V2");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     public static void main(String[] args) {
