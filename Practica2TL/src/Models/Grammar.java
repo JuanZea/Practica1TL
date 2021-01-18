@@ -277,6 +277,11 @@ public class Grammar {
         line = line.substring(index);
         index = 0;
 
+        // Filtra paréntesis vacíos
+        if (line.charAt(0) == ')') {
+            return this.error = "E10";
+        }
+
         // Se intenta leer un carácter
         if (line.length() > 2 && line.charAt(0) == '\'' && line.charAt(2) == '\'') {
             line = line.substring(3);
@@ -577,6 +582,9 @@ public class Grammar {
             }
             case 9: {
                 return "definición de carácter inválida";
+            }
+            case 10: {
+                return "paréntesis sin contenido";
             }
         }
     }
