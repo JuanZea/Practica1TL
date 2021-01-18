@@ -229,6 +229,11 @@ public class Grammar {
             return this.error = "E3";
         }
 
+        // Se excluyen los terminales que no reconoce la gramática
+        if (word.length() == 0) {
+            return this.error = "E11";
+        }
+
         // Se excluyen las palabras reservadas
         if (this.reservedWords.contains(word)) {
             if (word.equals("if")) {
@@ -585,6 +590,9 @@ public class Grammar {
             }
             case 10: {
                 return "paréntesis sin contenido";
+            }
+            case 11: {
+                return "uso terminal inválido";
             }
         }
     }
