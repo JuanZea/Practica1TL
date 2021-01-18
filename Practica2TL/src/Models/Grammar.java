@@ -434,7 +434,35 @@ public class Grammar {
          if (line.length() == 0) {
              return "";
          }
-         return null;
+         if (!line.startsWith("else")) {
+             return "E8";
+         }
+         line = line.substring(4);
+         // <ESP>
+         line = this.ESP(line);
+         // "{"
+         line = this.terminal(line , '{');
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ESP>
+         line = this.ESP(line);
+         // <BLOQUE>
+         line = this.BLOCK(line);
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ESP>
+         line = this.ESP(line);
+         // "}"
+         line = this.terminal(line , '}');
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ESP>
+         line = this.ESP(line);
+
+         return line;
     }
 
     public String terminal(String line, char terminal) {
@@ -519,6 +547,9 @@ public class Grammar {
             }
             case 7: {
                 return "la expresión no esta balanceada con respecto a sus paréntesis";
+            }
+            case 8: {
+                return "se esperaba la instrucción \"else\"";
             }
         }
     }
