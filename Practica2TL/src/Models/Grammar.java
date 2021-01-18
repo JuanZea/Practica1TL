@@ -37,9 +37,11 @@ public class Grammar {
             return response;
         }
         if (this.ifMode) {
+            this.initialize();
             return this.IF(line);
         }
         if (this.whileMode) {
+            this.initialize();
             return this.WHILE(line);
         }
         return "RECHAZADA";
@@ -107,14 +109,39 @@ public class Grammar {
     }
 
      /**
-     * Producción #2: <S> --> if<SENTENCIA><ELSE>
+     * Producción #2: <S> --> <ESP>if<SENTENCIA><ELSE><ESP>
      */
      private String IF(String line) {
-         return "IF";
+         // <ESP>
+         line = this.ESP(line);
+         // "if"
+         if (!line.startsWith("if")) {
+             return this.translation(this.error = "Eif");
+         } else {
+             line = line.substring(2);
+         }
+         // <SENTENCIA>
+         line = this.SENTENCE(line);
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ELSE>
+         line = this.ELSE(line);
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ESP>
+         line = this.ESP(line);
+
+         // Decisión
+         if (line.length() == 0) {
+             return "ACEPTADA";
+         }
+         return "RECHAZADA";
      }
 
      /**
-     * Producción #3: <S> --> while<SENTENCIA>
+     * Producción #3: <S> --> <ESP>while<SENTENCIA><ESP>
      */
      private String WHILE(String line) {
         return "WHILE";
@@ -329,6 +356,87 @@ public class Grammar {
         return line;
     }
 
+    /**
+     * <SENTENCIA> --> <ESP>(<ESP><EX-LOG><ESP>)<ESP>{<ESP><BLOQUE><ESP>}<ESP>
+     */
+    public String SENTENCE(String line) {
+        // <ESP>
+         line = this.ESP(line);
+        // "("
+        line = this.terminal(line , '(');
+        this.parenthesis++;
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+        // <EX>
+        line = this.EX(line);
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+        // "{"
+        line = this.terminal(line , '{');
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+        // <BLOQUE>
+        line = this.BLOCK(line);
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+        // "}"
+        line = this.terminal(line , '}');
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+
+        return line;
+    }
+
+    public String BLOCK(String line) {
+        int i = 0;
+        String response;
+        String subline = null;
+        while (i < line.length()) {
+            if (line.charAt(i) == '}') {
+                subline = line.substring(0, i);
+                break;
+            }
+            i++;
+        }
+        if (subline == null) {
+            response = new Grammar().process(line);
+            if (response.equals("ACEPTADA")) {
+                return line.substring(subline.length());
+            } else {
+                return this.error = response;
+            }
+        } else {
+            response = new Grammar().process(subline);
+            if (response.equals("ACEPTADA")) {
+                return line.substring(subline.length());
+            } else {
+                return this.error = response;
+            }
+        }
+    }
+
+    public String ELSE(String line) {
+         if (line.length() == 0) {
+             return "";
+         }
+         return null;
+    }
+
     public String terminal(String line, char terminal) {
         // Verificación de la linea
         if (line.length() == 0) {
@@ -374,6 +482,9 @@ public class Grammar {
     }
 
     public String translation(String token) {
+        if (!token.startsWith("E")) {
+            return token;
+        }
         token = token.substring(1);
         int error;
         try {
