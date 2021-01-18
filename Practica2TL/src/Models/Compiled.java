@@ -11,6 +11,14 @@ public class Compiled {
         this.lists = lists;
     }
 
+    public ArrayList<String> getResponses() {
+        return responses;
+    }
+
+    public ArrayList<LSL> getLists() {
+        return lists;
+    }
+
     public String getResponse(int index) {
         return responses.get(index);
     }
