@@ -12,15 +12,6 @@ public class Grammar {
     // iIndicadores de la gramática principal
     private boolean ifMode;
     private boolean whileMode;
-    private boolean exArit;
-    private boolean exLog;
-    private boolean exChar;
-
-    // iIndicadores de la gramática de expresiones aritméticas
-    private boolean exArit_e1;
-    private boolean exArit_e2;
-    private boolean exArit_e3;
-    private boolean exArit_e4;
 
     private String error;
 
@@ -53,9 +44,6 @@ public class Grammar {
         this.parenthesis = 0;
         this.ifMode = false;
         this.whileMode = false;
-        exArit = false;
-        exLog = false;
-        exChar = false;
         this.error = null;
     }
 
@@ -198,7 +186,7 @@ public class Grammar {
         }
 
         // Verificación de inicio de expresión
-        if (!this.alphabet.contains(line.charAt(0)) && line.charAt(0) != '(') {
+        if (!this.alphabet.contains(line.charAt(0)) && line.charAt(0) != '(' && line.charAt(0) != '\'') {
             return this.error = "E4";
         }
 
@@ -223,76 +211,61 @@ public class Grammar {
         line = line.substring(index);
         index = 0;
 
-        // Se intenta leer un número
-        while (index < line.length()) {
-            if (!this.isNumber(line.charAt(index))) {
-                break;
-            }
-            numRead = true;
-            index++;
-        }
-        if (numRead) {
-            line = line.substring(index);
-        }
-        index = 0;
-
-        // Verificación de la linea
-        if (line.length() == 0 && numRead) {
-            return this.error = "E;";
-        }
-
-        // Se deshacen los paréntesis de cierre
-        if (numRead) {
+        // Se intenta leer un carácter
+        if (line.length() > 2 && line.charAt(0) == '\'' && line.charAt(2) == '\'') {
+            line = line.substring(3);
+        } else {
+            // Se intenta leer un número
             while (index < line.length()) {
-                if (line.charAt(index) != ')') {
-                    if (line.charAt(index) == ' ') {
-                        index++;
-                        continue;
-                    }
+                if (!this.isNumber(line.charAt(index))) {
                     break;
                 }
-                this.parenthesis--;
+                numRead = true;
                 index++;
             }
-            if (parenthesis < 0) {
-                return this.error = "E7";
+            if (numRead) {
+                line = line.substring(index);
             }
-            line = line.substring(index);
             index = 0;
-        }
 
-        // Se intenta leer un nombre de variable teniendo en cuenta que no se leyó un número
-        if (!numRead) {
-            while (index < line.length()) {
-                if (!this.alphabet.contains(line.charAt(index))) {
-                    word = line.substring(0, index);
-                    break;
-                }
-                index++;
+            // Verificación de la linea
+            if (line.length() == 0 && numRead) {
+                return this.error = "E;";
             }
-            index = 0;
-            if (word == null) {
-                if (this.varName(line)) {
-                    // Se excluyen las palabras reservadas
-                    if (this.reservedWords.contains(line)) {
-                        return this.error = "E5";
+
+            // Se intenta leer un nombre de variable teniendo en cuenta que no se leyó un número
+            if (!numRead) {
+                while (index < line.length()) {
+                    if (!this.alphabet.contains(line.charAt(index))) {
+                        word = line.substring(0, index);
+                        break;
                     }
-                    return this.error = "E;";
+                    index++;
                 }
-                return this.error = "E3";
+                index = 0;
+                if (word == null) {
+                    if (this.varName(line)) {
+                        // Se excluyen las palabras reservadas
+                        if (this.reservedWords.contains(line)) {
+                            return this.error = "E5";
+                        }
+                        return this.error = "E;";
+                    }
+                    return this.error = "E3";
+                }
+                // Se excluyen las palabras reservadas
+                if (this.reservedWords.contains(word)) {
+                    return this.error = "E5";
+                }
+                if (this.varName(word)) {
+                    line = line.substring(word.length());
+                }
             }
-            // Se excluyen las palabras reservadas
-            if (this.reservedWords.contains(word)) {
-                return this.error = "E5";
-            }
-            if (this.varName(word)) {
-                line = line.substring(word.length());
-            }
-        }
 
-        // Verificación de la linea
-        if (line.length() == 0) {
-            return "";
+            // Verificación de la linea
+            if (line.length() == 0) {
+                return "";
+            }
         }
 
         // Se deshacen los paréntesis de cierre
