@@ -214,12 +214,12 @@ public class Grammar {
         line = this.ESP(line);
         // <EX>
         line = this.EX(line);
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
         // Verificación de paréntesis
         if (parenthesis != 0) {
             return this.error = "E7";
-        }
-        if (this.error != null) { // Filtro de error
-            return this.translation(this.error);
         }
         // <ESP>
         line = this.ESP(line);
@@ -428,12 +428,12 @@ public class Grammar {
         line = this.ESP(line);
         // <EX>
         line = this.EX(line);
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
         // Verificación de paréntesis
         if (parenthesis != 0) {
             return this.error = "E7";
-        }
-        if (this.error != null) { // Filtro de error
-            return this.translation(this.error);
         }
         // <ESP>
         line = this.ESP(line);
