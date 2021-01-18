@@ -144,7 +144,27 @@ public class Grammar {
      * Producción #3: <S> --> <ESP>while<SENTENCIA><ESP>
      */
      private String WHILE(String line) {
-        return "WHILE";
+         // <ESP>
+         line = this.ESP(line);
+         // "while"
+         if (!line.startsWith("while")) {
+             return this.translation(this.error = "Ewhile");
+         } else {
+             line = line.substring(5);
+         }
+         // <SENTENCIA>
+         line = this.SENTENCE(line);
+         if (this.error != null) { // Filtro de error
+             return this.translation(this.error);
+         }
+         // <ESP>
+         line = this.ESP(line);
+
+         // Decisión
+         if (line.length() == 0) {
+             return "ACEPTADA";
+         }
+         return "RECHAZADA";
      }
 
     // Non-Terminals Functions
@@ -299,6 +319,10 @@ public class Grammar {
                     }
                     return this.error = "E3";
                 }
+                // Se excluyen los terminales que no reconoce la gramática
+                if (word.length() == 0) {
+                    return this.error = "E9";
+                }
                 // Se excluyen las palabras reservadas
                 if (this.reservedWords.contains(word)) {
                     return this.error = "E5";
@@ -416,7 +440,7 @@ public class Grammar {
         if (subline == null) {
             response = new Grammar().process(line);
             if (response.equals("ACEPTADA")) {
-                return line.substring(subline.length());
+                return "";
             } else {
                 return this.error = response;
             }
@@ -550,6 +574,9 @@ public class Grammar {
             }
             case 8: {
                 return "se esperaba la instrucción \"else\"";
+            }
+            case 9: {
+                return "definición de carácter inválida";
             }
         }
     }
