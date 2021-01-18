@@ -1,0 +1,15 @@
+.sky {
+    -fx-background-color: cyan;
+    -fx-border-color: azure;
+    -fx-border-width: 2px;
+}
+
+.success {
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+}
+
+.danger {
+    -fx-font-weight: bold;
+    -fx-text-fill: firebrick;
+}
