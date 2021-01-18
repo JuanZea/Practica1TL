@@ -55,7 +55,7 @@ public class Grammar {
     }
 
     /**
-     * Producción #1: <S> --> <ESP><TIPO> <ESP><NV><ESP>=<ESP><EX><ESP>;<ESP>
+     * Producción #1: <S> --> <ESP><TIPO> <ESP><NV><ESP><INSTANCIADO>;<ESP>
      */
     private String S(String line) {
         // <ESP>
@@ -79,20 +79,11 @@ public class Grammar {
         }
         // <ESP>
         line = this.ESP(line);
-        // "="
-        line = this.terminal(line , '=');
+        // <INSTANCIADO>
+        line = this.INSTANCE(line);
         if (this.error != null) { // Filtro de error
             return this.translation(this.error);
         }
-        // <ESP>
-        line = this.ESP(line);
-        // <EX>
-        line = this.EX(line);
-        if (this.error != null) { // Filtro de error
-            return this.translation(this.error);
-        }
-        // <ESP>
-        line = this.ESP(line);
         // ";"
         line = this.terminal(line , ';');
         if (this.error != null) { // Filtro de error
@@ -203,6 +194,37 @@ public class Grammar {
             return line.substring(7);
         }
         return " ".concat(line);
+    }
+
+    public String INSTANCE(String line) {
+        // Verificación de la linea
+        if (line.length() == 0) {
+            return line;
+        }
+        if (line.charAt(0) == ';') {
+            return line;
+        }
+
+        // "="
+        line = this.terminal(line , '=');
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+        // <EX>
+        line = this.EX(line);
+        // Verificación de paréntesis
+        if (parenthesis != 0) {
+            return this.error = "E7";
+        }
+        if (this.error != null) { // Filtro de error
+            return this.translation(this.error);
+        }
+        // <ESP>
+        line = this.ESP(line);
+
+        return line;
     }
 
     public String NV(String line) {
@@ -344,7 +366,7 @@ public class Grammar {
 
             // Verificación de la linea
             if (line.length() == 0) {
-                return "";
+                return ""; // OJO
             }
         }
 
@@ -406,6 +428,10 @@ public class Grammar {
         line = this.ESP(line);
         // <EX>
         line = this.EX(line);
+        // Verificación de paréntesis
+        if (parenthesis != 0) {
+            return this.error = "E7";
+        }
         if (this.error != null) { // Filtro de error
             return this.translation(this.error);
         }
