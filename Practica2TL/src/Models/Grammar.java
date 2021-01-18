@@ -32,11 +32,16 @@ public class Grammar {
         String response;
 
         // Se usan las producciones del símbolo inicial de la gramática
-        response = this.S_S1(line);
+        response = this.S(line);
         if (!(this.ifMode || this.whileMode)) {
             return response;
         }
-        // S2 y S3 [En Progreso...]
+        if (this.ifMode) {
+            return this.IF(line);
+        }
+        if (this.whileMode) {
+            return this.WHILE(line);
+        }
         return "RECHAZADA";
     }
 
@@ -50,7 +55,7 @@ public class Grammar {
     /**
      * Producción #1: <S> --> <ESP><TIPO> <ESP><NV><ESP>=<ESP><EX><ESP>;<ESP>
      */
-    private String S_S1(String line) {
+    private String S(String line) {
         // <ESP>
         line = this.ESP(line);
         // <TIPO>
@@ -100,6 +105,20 @@ public class Grammar {
         }
         return "RECHAZADA";
     }
+
+     /**
+     * Producción #2: <S> --> if<SENTENCIA><ELSE>
+     */
+     private String IF(String line) {
+         return "IF";
+     }
+
+     /**
+     * Producción #3: <S> --> while<SENTENCIA>
+     */
+     private String WHILE(String line) {
+        return "WHILE";
+     }
 
     // Non-Terminals Functions
 
